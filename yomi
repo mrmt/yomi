@@ -106,7 +106,7 @@ pod2usage() unless scalar(@ARGV) == 1;
 my $string = $ARGV[0];
 my $desc;
 for my $char (split(//, $string)){
-  $desc .= $yomi->{$char};
+  $desc .= $yomi->{lc($char)};
   $desc .= ' ';
 }
 
