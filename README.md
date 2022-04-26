@@ -5,7 +5,7 @@
 
 ## Usage
 
-./yomi [-h|--help] some_text
+./yomi [-h|--help] [-v|--verbose] some_text
 
 ## License
 
