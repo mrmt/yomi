@@ -10,6 +10,7 @@ yomi - describe characters one by one in Japanese
 
   Options:
   --help, -h                  show this help
+  --verbose, -v               more verbose output
 
 =cut
 
@@ -24,7 +25,7 @@ binmode(STDOUT, ':utf8:');
 
 my $yomi = {
             ' ' => 'スペース',
-            '!' => 'びっくりマーク',
+            '!' => 'びっくり',
             '"' => 'ダブルクォート',
             '#' => 'シャープ',
             '$' => 'ドル',
@@ -88,28 +89,43 @@ my $yomi = {
             'x' => 'エックス',
             'y' => 'ワイ',
             'z' => 'ゼット',
-            '{' => '左中括弧',
-            '|' => 'パイプ',
-            '}' => '右中括弧',
+            '{' => '左中カッコ',
+            '|' => '縦棒',
+            '}' => '右中カッコ',
             '~' => 'ティルデ'
            };
 
 my $option_help;
+my $option_verbose;
 
 GetOptions(
-    'help|h' => \$option_help
+    'help|h' => \$option_help,
+    'verbose|v' => \$option_verbose
 ) or pod2usage();
 
 pod2usage() if $option_help;
 pod2usage() unless scalar(@ARGV) == 1;
 
 my $string = $ARGV[0];
-my $desc;
+my @desc;
+
 for my $char (split(//, $string)){
-  $desc .= $yomi->{lc($char)};
-  $desc .= ' ';
+    if($option_verbose){
+        my $desc;
+        if($char =~ /[A-Z]/){
+            $desc .= '大文字';
+        }elsif($char =~ /[a-z]/){
+            $desc .= '小文字';
+        }elsif($char =~ /[0-9]/){
+            $desc .= '数字';
+        }
+        $desc .= $yomi->{lc($char)};
+        push @desc, $desc;
+    }else{
+        push @desc, $yomi->{lc($char)};
+    }
 }
 
-say $desc;
+say join(' ', @desc);
 
 __END__
